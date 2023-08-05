@@ -3,6 +3,7 @@
 // Selecting input elements
 const usernameInputLogin = document.querySelector('.login__input--user');
 const passwordInputLogin = document.querySelector('.login__input--pin');
+const amountLoanInput = document.querySelector('.form__input--loan-amount');
 
 // Selecting text elements
 const labelWelcome = document.querySelector('.welcome');
@@ -19,6 +20,7 @@ const movementsContainer = document.querySelector('.movements');
 // Selecting buttons
 const btnLogin = document.querySelector('.login__btn');
 const btnLogout = document.querySelector('.log-out');
+const btnLoan = document.querySelector('.form__btn--loan');
 
 // Declaring main variables
 let currentAccount;
@@ -173,4 +175,20 @@ btnLogout.addEventListener('click', function (event) {
   hideApp();
   hideButton();
   labelWelcome.textContent = 'Log in to get started';
+});
+
+btnLoan.addEventListener('click', function (event) {
+  event.preventDefault();
+
+  const amount = Number(amountLoanInput.value);
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    setTimeout(() => {
+      currentAccount.movements.push(amount);
+      updateUI(currentAccount);
+    }, 3000);
+  }
+
+  // Reseting input
+  amountLoanInput.value = '';
+  amountLoanInput.blur();
 });

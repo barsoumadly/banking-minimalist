@@ -104,10 +104,7 @@ nav {
 }
 .login__input:focus {
   outline: none;
-  border: 1px solid #ccc;
-}
-.login__input::placeholder {
-  color: #bbb;
+  border: 1px solid #a3cb38;
 }
 .login__btn {
   border: none;

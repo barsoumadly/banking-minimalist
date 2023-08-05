@@ -83,7 +83,8 @@ nav {
 }
 .logo {
   height: 5.25rem;
-  margin-left: 120px;
+  margin-left: 642px;
+  position: fixed;
 }
 .login {
   display: flex;
@@ -361,7 +362,9 @@ h2 {
 }
 .nav__link--btn:link,
 .nav__link--btn:visited {
-  padding: 0.8rem 2.5rem;
+  font-size: 1.7rem;
+  font-weight: 400;
+  padding: 0.6rem 2rem;
   border-radius: 3rem;
   /* background-color: var(--color-primary); */
   background-image: linear-gradient(to top left, #39b385, #a3cb38);

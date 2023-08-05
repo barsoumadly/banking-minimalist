@@ -27,6 +27,7 @@ const btnLogout = document.querySelector('.log-out');
 const btnLoan = document.querySelector('.form__btn--loan');
 const btnClose = document.querySelector('.form__btn--close');
 const btnTransfer = document.querySelector('.form__btn--transfer');
+const btnSort = document.querySelector('.btn--sort');
 
 // Declaring main variables
 let currentAccount;
@@ -88,12 +89,17 @@ const showButton = function () {
 };
 
 // Displaying account movements
-const displayMovements = function (account) {
+const displayMovements = function (account, sort = false) {
   // Removing exsisting elements
   movementsContainer.innerHTML = '';
 
+  // Checking sort variable
+  const movements = sort
+    ? account.movements.slice().sort((a, b) => a - b)
+    : account.movements;
+
   // Adding accounts movements
-  account.movements.forEach(function (movement, index) {
+  movements.forEach(function (movement, index) {
     const movementType = movement > 0 ? 'deposit' : 'withdrawal';
     const html = `<div class="movements__row">
     <div class="movements__type movements__type--${movementType}">${
@@ -257,4 +263,13 @@ btnClose.addEventListener('click', function (event) {
   // Reseting input fields
   usernameInputClose.value = passwordInputClose.value = '';
   passwordInputClose.blur();
+});
+
+let isSorted = false;
+
+btnSort.addEventListener('click', function (event) {
+  event.preventDefault();
+
+  displayMovements(currentAccount, !isSorted);
+  isSorted = !isSorted;
 });

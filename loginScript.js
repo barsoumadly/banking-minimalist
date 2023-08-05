@@ -35,7 +35,7 @@ const createUsername = function (account) {
 // Accounts
 const account1 = {
   owner: 'Robert Daniel',
-  movements: [2000, 100, -200],
+  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   password: 1111,
 };
 
@@ -90,9 +90,9 @@ const displayMovements = function (account) {
 
 // Displaying current balance
 const displayBalance = function (account) {
-  account.balance = account.movements
-    .filter(movement => movement > 0)
-    .reduce((accumlator, movement) => accumlator + movement);
+  account.balance = account.movements.reduce(
+    (accumlator, movement) => accumlator + movement
+  );
 
   // Showing balance
   labelBalance.textContent = `${account.balance} €`;

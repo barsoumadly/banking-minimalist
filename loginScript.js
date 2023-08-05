@@ -4,6 +4,8 @@
 const usernameInputLogin = document.querySelector('.login__input--user');
 const passwordInputLogin = document.querySelector('.login__input--pin');
 const amountLoanInput = document.querySelector('.form__input--loan-amount');
+const usernameInputClose = document.querySelector('.form__input--user');
+const passwordInputClose = document.querySelector('.form__input--pin');
 
 // Selecting text elements
 const labelWelcome = document.querySelector('.welcome');
@@ -21,6 +23,7 @@ const movementsContainer = document.querySelector('.movements');
 const btnLogin = document.querySelector('.login__btn');
 const btnLogout = document.querySelector('.log-out');
 const btnLoan = document.querySelector('.form__btn--loan');
+const btnClose = document.querySelector('.form__btn--close');
 
 // Declaring main variables
 let currentAccount;
@@ -180,6 +183,7 @@ btnLogout.addEventListener('click', function (event) {
 btnLoan.addEventListener('click', function (event) {
   event.preventDefault();
 
+  // Checking amount validation
   const amount = Number(amountLoanInput.value);
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     setTimeout(() => {
@@ -188,7 +192,30 @@ btnLoan.addEventListener('click', function (event) {
     }, 3000);
   }
 
-  // Reseting input
+  // Reseting input field
   amountLoanInput.value = '';
   amountLoanInput.blur();
+});
+
+btnClose.addEventListener('click', function (event) {
+  event.preventDefault();
+
+  // Checking validation of username and password
+  if (
+    usernameInputClose.value === currentAccount.username &&
+    Number(passwordInputClose.value) === currentAccount.password
+  ) {
+    const index = accounts.findIndex(
+      account => account.username === currentAccount.username
+    );
+    accounts.splice(index, 1);
+
+    hideApp();
+    hideButton();
+    labelWelcome.textContent = 'Log in to get started';
+  }
+
+  // Reseting input fields
+  usernameInputClose.value = passwordInputClose.value = '';
+  passwordInputClose.blur();
 });

@@ -6,6 +6,8 @@ const passwordInputLogin = document.querySelector('.login__input--pin');
 const amountLoanInput = document.querySelector('.form__input--loan-amount');
 const usernameInputClose = document.querySelector('.form__input--user');
 const passwordInputClose = document.querySelector('.form__input--pin');
+const receiverAccountInput = document.querySelector('.form__input--to');
+const amountTransferInput = document.querySelector('.form__input--amount');
 
 // Selecting text elements
 const labelWelcome = document.querySelector('.welcome');
@@ -24,29 +26,39 @@ const btnLogin = document.querySelector('.login__btn');
 const btnLogout = document.querySelector('.log-out');
 const btnLoan = document.querySelector('.form__btn--loan');
 const btnClose = document.querySelector('.form__btn--close');
+const btnTransfer = document.querySelector('.form__btn--transfer');
 
 // Declaring main variables
 let currentAccount;
 
-// Create username
-const createUsername = function (account) {
-  account.username = account.owner
-    .toLowerCase()
-    .split(' ')
-    .map(name => name[0])
-    .join('');
-};
-
 // Accounts
 const account1 = {
-  owner: 'Robert Daniel',
+  owner: 'Stephen Thomas',
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   password: 1111,
 };
 
-createUsername(account1);
+const account2 = {
+  owner: 'Jessica Davis',
+  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  password: 2222,
+};
 
-const accounts = [account1];
+const accounts = [account1, account2];
+
+// Create username
+const createUsername = function (accounts) {
+  accounts.forEach(
+    account =>
+      (account.username = account.owner
+        .toLowerCase()
+        .split(' ')
+        .map(name => name[0])
+        .join(''))
+  );
+};
+
+createUsername(accounts);
 
 // Showing name of the user
 const showName = function (account) {
@@ -178,6 +190,33 @@ btnLogout.addEventListener('click', function (event) {
   hideApp();
   hideButton();
   labelWelcome.textContent = 'Log in to get started';
+});
+
+btnTransfer.addEventListener('click', function (event) {
+  event.preventDefault();
+
+  const amount = Number(amountTransferInput.value);
+  const receiverAccount = accounts.find(
+    account => account.username === receiverAccountInput.value
+  );
+
+  // Checking amount and receiver account validation
+  if (
+    amount > 0 &&
+    currentAccount.balance >= amount &&
+    receiverAccount &&
+    receiverAccount?.username !== currentAccount.username
+  ) {
+    setTimeout(() => {
+      currentAccount.movements.push(-amount);
+      receiverAccount.movements.push(amount);
+      updateUI(currentAccount);
+    }, 3000);
+  }
+
+  // Reseting input fields
+  amountTransferInput.value = receiverAccountInput.value = '';
+  amountTransferInput.blur();
 });
 
 btnLoan.addEventListener('click', function (event) {

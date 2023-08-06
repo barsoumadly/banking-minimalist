@@ -37,7 +37,7 @@ let currentAccount, timer;
 // Accounts
 const account1 = {
   owner: 'Stephen Thomas',
-  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  movements: [200, 255.23, -306.5, 25000, -342.21, -133.9, 79.97, 1300],
   movementsDates: [
     '2023-02-28T12:20:30.267Z',
     '2023-03-30T12:20:30.267Z',
@@ -165,12 +165,17 @@ const displayMovements = function (account, sort = false) {
     // Displaying movement date
     const date = formatDate(new Date(currentAccount.movementsDates[index]));
 
+    const mov = new Intl.NumberFormat(account.locale, {
+      style: 'currency',
+      currency: account.currency,
+    }).format(movement);
+
     const html = `<div class="movements__row">
     <div class="movements__type movements__type--${movementType}">${
       index + 1
     } ${movementType}</div>
     <div class="movements__date">${date}</div>
-    <div class="movements__value ${color}"> ${movement} €</div>
+    <div class="movements__value ${color}"> ${mov}</div>
   </div>`;
     movementsContainer.insertAdjacentHTML('afterbegin', html);
   });
@@ -183,7 +188,10 @@ const displayBalance = function (account) {
   );
 
   // Showing balance
-  labelBalance.textContent = `${account.balance} €`;
+  labelBalance.textContent = `${new Intl.NumberFormat(account.locale, {
+    style: 'currency',
+    currency: account.currency,
+  }).format(account.balance)}`;
 };
 
 // Displaying summary
@@ -191,19 +199,28 @@ const displaySummary = function (account) {
   const incomeValue = account.movements
     .filter(movement => movement > 0)
     .reduce((accumlator, movement) => accumlator + movement);
-  labelIncome.textContent = `${incomeValue} €`;
+  labelIncome.textContent = `${new Intl.NumberFormat(account.locale, {
+    style: 'currency',
+    currency: account.currency,
+  }).format(incomeValue)}`;
 
   const outcomeValue = account.movements
     .filter(movement => movement < 0)
     .reduce((accumlator, movement) => accumlator + movement);
-  labelOutcome.textContent = `${Math.abs(outcomeValue)} €`;
+  labelOutcome.textContent = `${new Intl.NumberFormat(account.locale, {
+    style: 'currency',
+    currency: account.currency,
+  }).format(Math.abs(outcomeValue))}`;
 
   const interestValue = account.movements
     .filter(movement => movement > 0)
     .map(movement => (movement * 2) / 100)
     .filter(movement => movement >= 1)
     .reduce((accumlator, movement) => accumlator + movement);
-  labelInterest.textContent = `${interestValue} €`;
+  labelInterest.textContent = `${new Intl.NumberFormat(account.locale, {
+    style: 'currency',
+    currency: account.currency,
+  }).format(interestValue)}`;
 };
 
 const updateUI = function (account) {
@@ -221,6 +238,7 @@ const hideApp = function () {
     headerEL.classList.remove('hidden');
     appEL.classList.add('hidden');
   }, 1000);
+  labelWelcome.textContent = 'Log in to get started';
 };
 
 // Hiding log out button
@@ -319,7 +337,6 @@ btnLogout.addEventListener('click', function (event) {
 
   hideApp();
   hideButton();
-  labelWelcome.textContent = 'Log in to get started';
 });
 
 btnTransfer.addEventListener('click', function (event) {
@@ -396,7 +413,6 @@ btnClose.addEventListener('click', function (event) {
 
     hideApp();
     hideButton();
-    labelWelcome.textContent = 'Log in to get started';
   }
 
   // Reseting input fields

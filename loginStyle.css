@@ -252,15 +252,9 @@ nav {
   margin-left: auto;
   border: none;
   background: none;
-  cursor: pointer;
-  font-size: 1.7rem;
+  font-size: 1.3rem;
   font-weight: 500;
-  color: inherit;
-  text-decoration: none;
-  transition: all 0.3s;
-  background-image: linear-gradient(to top left, #39b385, #a3cb38);
-  padding: 0.8rem 2.5rem;
-  border-radius: 3rem;
+  cursor: pointer;
   margin-bottom: 15px;
 }
 .btn-sort:link,

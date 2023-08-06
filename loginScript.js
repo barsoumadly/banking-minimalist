@@ -12,10 +12,11 @@ const amountTransferInput = document.querySelector('.form__input--amount');
 // Selecting text elements
 const labelWelcome = document.querySelector('.welcome');
 const labelBalance = document.querySelector('.balance__value');
+const labelDate = document.querySelector('.date');
+const labelTimer = document.querySelector('.timer');
 const labelIncome = document.querySelector('.summary__value--in');
 const labelOutcome = document.querySelector('.summary__value--out');
 const labelInterest = document.querySelector('.summary__value--interest');
-const labelDate = document.querySelector('.date');
 
 // Selecting containers
 const headerEL = document.querySelector('.header__title');
@@ -31,7 +32,7 @@ const btnTransfer = document.querySelector('.form__btn--transfer');
 const btnSort = document.querySelector('.btn--sort');
 
 // Declaring main variables
-let currentAccount;
+let currentAccount, timer;
 
 // Accounts
 const account1 = {
@@ -197,42 +198,6 @@ const updateUI = function (account) {
   displaySummary(account);
 };
 
-// Displaying current date
-const displayCurrentDate = function () {
-  const now = new Date();
-  const day = String(now.getDate()).padStart(2, 0);
-  const month = String(now.getMonth() + 1).padStart(2, 0);
-  const year = now.getFullYear();
-
-  const hour = String(now.getHours() - 12).padStart(2, 0);
-  const minutes = String(now.getMinutes()).padStart(2, 0);
-
-  labelDate.textContent = `${day}/${month}/${year}, ${hour}:${minutes}`;
-};
-
-// Actions of buttons
-btnLogin.addEventListener('click', function (event) {
-  event.preventDefault();
-
-  // Find account by username
-  currentAccount = accounts.filter(
-    account => account.username === usernameInputLogin.value
-  )[0];
-
-  // Checking account password
-  if (currentAccount?.password === Number(passwordInputLogin.value)) {
-    showName(currentAccount);
-    showApp();
-    showButton();
-    updateUI(currentAccount);
-    displayCurrentDate();
-  }
-
-  // Reseting input fields
-  usernameInputLogin.value = passwordInputLogin.value = '';
-  passwordInputLogin.blur();
-});
-
 // Hiding container app
 const hideApp = function () {
   headerEL.style.opacity = 100;
@@ -253,6 +218,71 @@ const hideButton = function () {
 
   btnLogout.classList.add('hidden');
 };
+
+// Displaying current date
+const displayCurrentDate = function () {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, 0);
+  const month = String(now.getMonth() + 1).padStart(2, 0);
+  const year = now.getFullYear();
+
+  const hour = String(now.getHours() - 12).padStart(2, 0);
+  const minutes = String(now.getMinutes()).padStart(2, 0);
+
+  labelDate.textContent = `${day}/${month}/${year}, ${hour}:${minutes}`;
+};
+
+// Setting log out timer
+const startLogOutTimer = function () {
+  let time = 120;
+  timer = setInterval(() => {
+    const minutes = String(Math.trunc(time / 60)).padStart(2, 0);
+    const seconds = String(time % 60).padStart(2, 0);
+    labelTimer.textContent = `${minutes}:${seconds}`;
+
+    if (time === 0) {
+      hideApp();
+      hideButton();
+      clearInterval(timer);
+    }
+    time--;
+  }, 1000);
+  return timer;
+};
+
+// Actions of buttons
+btnLogin.addEventListener('click', function (event) {
+  event.preventDefault();
+
+  // Find account by username
+  currentAccount = accounts.filter(
+    account => account.username === usernameInputLogin.value
+  )[0];
+
+  // Checking account password
+  if (currentAccount?.password === Number(passwordInputLogin.value)) {
+    // show container app
+    showName(currentAccount);
+    showApp();
+    showButton();
+    updateUI(currentAccount);
+
+    // display today date
+    displayCurrentDate();
+
+    // display log out timer
+    if (timer) {
+      clearInterval(timer);
+      timer = startLogOutTimer();
+    } else {
+      startLogOutTimer();
+    }
+  }
+
+  // Reseting input fields
+  usernameInputLogin.value = passwordInputLogin.value = '';
+  passwordInputLogin.blur();
+});
 
 btnLogout.addEventListener('click', function (event) {
   event.preventDefault();
@@ -284,6 +314,12 @@ btnTransfer.addEventListener('click', function (event) {
       receiverAccount.movementsDates.push(new Date().toISOString());
       updateUI(currentAccount);
     }, 3000);
+
+    // reset the log out timer
+    if (timer) {
+      clearInterval(timer);
+      timer = startLogOutTimer();
+    }
   }
 
   // Reseting input fields
@@ -302,6 +338,12 @@ btnLoan.addEventListener('click', function (event) {
       currentAccount.movementsDates.push(new Date().toISOString());
       updateUI(currentAccount);
     }, 3000);
+
+    // reset the log out timer
+    if (timer) {
+      clearInterval(timer);
+      timer = startLogOutTimer();
+    }
   }
 
   // Reseting input field

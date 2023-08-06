@@ -198,7 +198,7 @@ nav {
   font-size: 1.1rem;
   text-transform: uppercase;
   font-weight: 500;
-  color: #666;
+  color: black;
 }
 .movements__type--deposit {
   background-image: linear-gradient(to top left, #39b385, #a3cb38);

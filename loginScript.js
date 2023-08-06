@@ -36,12 +36,32 @@ let currentAccount;
 const account1 = {
   owner: 'Stephen Thomas',
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  movementsDates: [
+    '2023-02-28T12:20:30.267Z',
+    '2023-03-30T12:20:30.267Z',
+    '2023-04-05T12:20:30.267Z',
+    '2023-04-12T12:20:30.267Z',
+    '2023-05-18T12:20:30.267Z',
+    '2023-05-27T12:20:30.267Z',
+    '2023-08-04T12:20:30.267Z',
+    '2023-08-05T12:20:30.267Z',
+  ],
   password: 1111,
 };
 
 const account2 = {
   owner: 'Jessica Davis',
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  movementsDates: [
+    '2021-11-01T13:15:33.035Z',
+    '2021-11-30T09:48:16.867Z',
+    '2021-12-25T06:04:23.907Z',
+    '2022-01-25T14:18:46.235Z',
+    '2022-02-05T16:33:06.386Z',
+    '2022-04-10T14:43:26.374Z',
+    '2022-06-25T18:49:59.371Z',
+    '2023-08-05T12:01:20.894Z',
+  ],
   password: 2222,
 };
 
@@ -88,6 +108,28 @@ const showButton = function () {
   btnLogout.classList.remove('hidden');
 };
 
+// Formating movement date
+const formatDate = function (date) {
+  // Calc difference between dates
+  const calcPassedDays = function (date1, date2) {
+    return Math.round(Math.abs((date2 - date1) / (1000 * 60 * 60 * 24)));
+  };
+  const daysPassed = calcPassedDays(new Date(), date);
+
+  // display the suitable style
+  if (daysPassed === 0) {
+    return 'Today';
+  } else if (daysPassed === 1) {
+    return 'Yesterday';
+  } else if (daysPassed <= 7) {
+    return `${daysPassed} days ago`;
+  } else {
+    return `${String(date.getDate()).padStart(2, 0)}/${String(
+      date.getMonth() + 1
+    ).padStart(2, 0)}/${date.getFullYear()}`;
+  }
+};
+
 // Displaying account movements
 const displayMovements = function (account, sort = false) {
   // Removing exsisting elements
@@ -100,12 +142,19 @@ const displayMovements = function (account, sort = false) {
 
   // Adding accounts movements
   movements.forEach(function (movement, index) {
+    // Checking movement type
     const movementType = movement > 0 ? 'deposit' : 'withdrawal';
+    const color = movement > 0 ? 'd' : 'w';
+
+    // Displaying movement date
+    const date = formatDate(new Date(currentAccount.movementsDates[index]));
+
     const html = `<div class="movements__row">
     <div class="movements__type movements__type--${movementType}">${
       index + 1
     } ${movementType}</div>
-    <div class="movements__value">${movement} €</div>
+    <div class="movements__date">${date}</div>
+    <div class="movements__value ${color}"> ${movement} €</div>
   </div>`;
     movementsContainer.insertAdjacentHTML('afterbegin', html);
   });
@@ -215,7 +264,9 @@ btnTransfer.addEventListener('click', function (event) {
   ) {
     setTimeout(() => {
       currentAccount.movements.push(-amount);
+      currentAccount.movementsDates.push(new Date().toISOString());
       receiverAccount.movements.push(amount);
+      receiverAccount.movementsDates.push(new Date().toISOString());
       updateUI(currentAccount);
     }, 3000);
   }
@@ -233,6 +284,7 @@ btnLoan.addEventListener('click', function (event) {
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     setTimeout(() => {
       currentAccount.movements.push(amount);
+      currentAccount.movementsDates.push(new Date().toISOString());
       updateUI(currentAccount);
     }, 3000);
   }

@@ -37,6 +37,7 @@ let currentAccount, timer;
 // Accounts
 const account1 = {
   owner: 'Stephen Thomas',
+  // old way
   movements: [200, 255.23, -306.5, 25000, -342.21, -133.9, 79.97, 1300],
   movementsDates: [
     '2023-02-28T12:20:30.267Z',
@@ -47,6 +48,42 @@ const account1 = {
     '2023-05-27T12:20:30.267Z',
     '2023-08-04T12:20:30.267Z',
     '2023-08-05T12:20:30.267Z',
+  ],
+
+  // for sorting
+  movementsData: [
+    {
+      value: 200,
+      date: '2023-02-28T12:20:30.267Z',
+    },
+    {
+      value: 255.23,
+      date: '2023-03-30T12:20:30.267Z',
+    },
+    {
+      value: -306.5,
+      date: '2023-04-05T12:20:30.267Z',
+    },
+    {
+      value: 25000,
+      date: '2023-04-12T12:20:30.267Z',
+    },
+    {
+      value: -342.21,
+      date: '2023-05-18T12:20:30.267Z',
+    },
+    {
+      value: -133.9,
+      date: '2023-05-27T12:20:30.267Z',
+    },
+    {
+      value: 79.97,
+      date: '2023-08-04T12:20:30.267Z',
+    },
+    {
+      value: 1300,
+      date: '2023-08-05T12:20:30.267Z',
+    },
   ],
   password: 1111,
   locale: 'pt-PT',
@@ -65,6 +102,42 @@ const account2 = {
     '2022-04-10T14:43:26.374Z',
     '2022-06-25T18:49:59.371Z',
     '2023-08-05T12:01:20.894Z',
+  ],
+
+  // for sorting
+  movementsData: [
+    {
+      value: 5000,
+      date: '2021-11-01T13:15:33.035Z',
+    },
+    {
+      value: 3400,
+      date: '2021-11-30T09:48:16.867Z',
+    },
+    {
+      value: -150,
+      date: '2021-12-25T06:04:23.907Z',
+    },
+    {
+      value: -790,
+      date: '2022-01-25T14:18:46.235Z',
+    },
+    {
+      value: -3210,
+      date: '2022-02-05T16:33:06.386Z',
+    },
+    {
+      value: -1000,
+      date: '2022-04-10T14:43:26.374Z',
+    },
+    {
+      value: 8500,
+      date: '2022-06-25T18:49:59.371Z',
+    },
+    {
+      value: -30,
+      date: '2023-08-05T12:01:20.894Z',
+    },
   ],
   password: 2222,
   locale: 'en-US',
@@ -153,22 +226,22 @@ const displayMovements = function (account, sort = false) {
 
   // Checking sort variable
   const movements = sort
-    ? account.movements.slice().sort((a, b) => a - b)
-    : account.movements;
+    ? account.movementsData.slice().sort((a, b) => a.value - b.value)
+    : account.movementsData;
 
   // Adding accounts movements
   movements.forEach(function (movement, index) {
     // Checking movement type
-    const movementType = movement > 0 ? 'deposit' : 'withdrawal';
-    const color = movement > 0 ? 'd' : 'w';
+    const movementType = movement.value > 0 ? 'deposit' : 'withdrawal';
+    const color = movement.value > 0 ? 'd' : 'w';
 
     // Displaying movement date
-    const date = formatDate(new Date(currentAccount.movementsDates[index]));
+    const date = formatDate(new Date(movement.date));
 
     const mov = new Intl.NumberFormat(account.locale, {
       style: 'currency',
       currency: account.currency,
-    }).format(movement);
+    }).format(movement.value);
 
     const html = `<div class="movements__row">
     <div class="movements__type movements__type--${movementType}">${
@@ -265,8 +338,8 @@ const displayCurrentDate = function () {
 
   // Internationalize date
   const options = {
-    day: 'numeric',
-    month: 'numeric',
+    day: '2-digit',
+    month: '2-digit',
     year: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
@@ -357,8 +430,16 @@ btnTransfer.addEventListener('click', function (event) {
     setTimeout(() => {
       currentAccount.movements.push(-amount);
       currentAccount.movementsDates.push(new Date().toISOString());
+      currentAccount.movementsData.push({
+        value: -amount,
+        date: new Date().toISOString(),
+      });
       receiverAccount.movements.push(amount);
       receiverAccount.movementsDates.push(new Date().toISOString());
+      receiverAccount.movementsData.push({
+        value: amount,
+        date: new Date().toISOString(),
+      });
       updateUI(currentAccount);
     }, 3000);
 
@@ -383,6 +464,10 @@ btnLoan.addEventListener('click', function (event) {
     setTimeout(() => {
       currentAccount.movements.push(amount);
       currentAccount.movementsDates.push(new Date().toISOString());
+      currentAccount.movementsData.push({
+        value: amount,
+        date: new Date().toISOString(),
+      });
       updateUI(currentAccount);
     }, 3000);
 

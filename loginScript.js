@@ -49,6 +49,8 @@ const account1 = {
     '2023-08-05T12:20:30.267Z',
   ],
   password: 1111,
+  locale: 'pt-PT',
+  currency: 'EUR',
 };
 
 const account2 = {
@@ -65,6 +67,8 @@ const account2 = {
     '2023-08-05T12:01:20.894Z',
   ],
   password: 2222,
+  locale: 'en-US',
+  currency: 'USD',
 };
 
 const accounts = [account1, account2];
@@ -126,9 +130,19 @@ const formatDate = function (date) {
   } else if (daysPassed <= 7) {
     return `${daysPassed} days ago`;
   } else {
-    return `${String(date.getDate()).padStart(2, 0)}/${String(
-      date.getMonth() + 1
-    ).padStart(2, 0)}/${date.getFullYear()}`;
+    // Old way
+    // return `${String(date.getDate()).padStart(2, 0)}/${String(
+    //   date.getMonth() + 1
+    // ).padStart(2, 0)}/${date.getFullYear()}`;
+
+    // Internationalize movement date
+    const options = {
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric',
+    };
+
+    return new Intl.DateTimeFormat(currentAccount.locale, options).format(date);
   }
 };
 
@@ -221,15 +235,31 @@ const hideButton = function () {
 
 // Displaying current date
 const displayCurrentDate = function () {
-  const now = new Date();
-  const day = String(now.getDate()).padStart(2, 0);
-  const month = String(now.getMonth() + 1).padStart(2, 0);
-  const year = now.getFullYear();
+  // Old way
+  // const now = new Date();
+  // const day = String(now.getDate()).padStart(2, 0);
+  // const month = String(now.getMonth() + 1).padStart(2, 0);
+  // const year = now.getFullYear();
 
-  const hour = String(now.getHours() - 12).padStart(2, 0);
-  const minutes = String(now.getMinutes()).padStart(2, 0);
+  // const hour = String(now.getHours() - 12).padStart(2, 0);
+  // const minutes = String(now.getMinutes()).padStart(2, 0);
+  // labelDate.textContent = `${day}/${month}/${year}, ${hour}:${minutes}`;
 
-  labelDate.textContent = `${day}/${month}/${year}, ${hour}:${minutes}`;
+  // Internationalize date
+  const options = {
+    day: 'numeric',
+    month: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  };
+
+  const currentTime = new Intl.DateTimeFormat(
+    currentAccount.locale,
+    options
+  ).format();
+
+  labelDate.textContent = currentTime;
 };
 
 // Setting log out timer

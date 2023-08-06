@@ -15,6 +15,7 @@ const labelBalance = document.querySelector('.balance__value');
 const labelIncome = document.querySelector('.summary__value--in');
 const labelOutcome = document.querySelector('.summary__value--out');
 const labelInterest = document.querySelector('.summary__value--interest');
+const labelDate = document.querySelector('.date');
 
 // Selecting containers
 const headerEL = document.querySelector('.header__title');
@@ -196,6 +197,19 @@ const updateUI = function (account) {
   displaySummary(account);
 };
 
+// Displaying current date
+const displayCurrentDate = function () {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, 0);
+  const month = String(now.getMonth() + 1).padStart(2, 0);
+  const year = now.getFullYear();
+
+  const hour = String(now.getHours() - 12).padStart(2, 0);
+  const minutes = String(now.getMinutes()).padStart(2, 0);
+
+  labelDate.textContent = `${day}/${month}/${year}, ${hour}:${minutes}`;
+};
+
 // Actions of buttons
 btnLogin.addEventListener('click', function (event) {
   event.preventDefault();
@@ -211,6 +225,7 @@ btnLogin.addEventListener('click', function (event) {
     showApp();
     showButton();
     updateUI(currentAccount);
+    displayCurrentDate();
   }
 
   // Reseting input fields

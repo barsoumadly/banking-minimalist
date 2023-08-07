@@ -144,7 +144,21 @@ const account2 = {
   currency: 'USD',
 };
 
-const accounts = [account1, account2];
+let accounts = [account1, account2];
+
+// Retrieve data from local storage
+const reteriveDate = function () {
+  accounts = JSON.parse(localStorage.getItem('accounts'));
+};
+
+reteriveDate();
+
+// Save data in local storage
+const saveData = function (accounts) {
+  localStorage.setItem('accounts', JSON.stringify(accounts));
+};
+
+saveData(accounts);
 
 // Create username
 const createUsername = function (accounts) {
@@ -443,6 +457,9 @@ btnTransfer.addEventListener('click', function (event) {
         date: new Date().toISOString(),
       });
       updateUI(currentAccount);
+
+      // Send data to local storage
+      saveData(accounts);
     }, 3000);
 
     // reset the log out timer
@@ -471,6 +488,9 @@ btnLoan.addEventListener('click', function (event) {
         date: new Date().toISOString(),
       });
       updateUI(currentAccount);
+
+      // Send data to local storage
+      saveData(accounts);
     }, 3000);
 
     // reset the log out timer

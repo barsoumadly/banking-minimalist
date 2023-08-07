@@ -356,7 +356,7 @@ const displayCurrentDate = function () {
 // Setting log out timer
 const startLogOutTimer = function () {
   let time = 120;
-  timer = setInterval(() => {
+  const setTimer = () => {
     const minutes = String(Math.trunc(time / 60)).padStart(2, 0);
     const seconds = String(time % 60).padStart(2, 0);
     labelTimer.textContent = `${minutes}:${seconds}`;
@@ -367,7 +367,9 @@ const startLogOutTimer = function () {
       clearInterval(timer);
     }
     time--;
-  }, 1000);
+  };
+  setTimer();
+  timer = setInterval(setTimer, 1000);
   return timer;
 };
 

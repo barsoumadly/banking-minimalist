@@ -7,6 +7,7 @@ const overlayEl = document.querySelector('.overlay');
 // Selecting buttons
 const btnsShowModal = document.querySelectorAll('.btn--show-modal');
 const btnCloseModal = document.querySelector('.btn--close-modal');
+const btnLogin = document.querySelector('.btn--login');
 
 // Closing Modal
 const closeModal = function () {
@@ -32,4 +33,9 @@ document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
     closeModal();
   }
+});
+
+btnLogin.addEventListener('click', function (event) {
+  event.preventDefault();
+  location.href = 'login.html';
 });

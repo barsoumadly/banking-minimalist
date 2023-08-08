@@ -146,14 +146,14 @@ const account2 = {
 
 let accounts = [account1, account2];
 
-// Retrieve data from local storage
+// Retrieve account from local storage
 const reteriveDate = function () {
   accounts = JSON.parse(localStorage.getItem('accounts'));
 };
 
 reteriveDate();
 
-// Save data in local storage
+// Save accounts in local storage
 const saveData = function (accounts) {
   localStorage.setItem('accounts', JSON.stringify(accounts));
 };

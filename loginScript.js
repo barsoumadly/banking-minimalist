@@ -306,6 +306,11 @@ const displaySummary = function (account) {
       style: 'currency',
       currency: account.currency,
     }).format(Math.abs(outcomeValue))}`;
+  } else {
+    labelOutcome.textContent = `${new Intl.NumberFormat(account.locale, {
+      style: 'currency',
+      currency: account.currency,
+    }).format(0)}`;
   }
 
   const interestValue = account.movements

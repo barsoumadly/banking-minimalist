@@ -149,12 +149,19 @@ let accounts = [account1, account2];
 // Retrieve account from local storage
 const reteriveDate = function () {
   accounts = JSON.parse(localStorage.getItem('accounts'));
+  if (
+    localStorage.getItem('account') &&
+    !accounts.includes(JSON.parse(localStorage.getItem('account')))
+  ) {
+    accounts.push(JSON.parse(localStorage.getItem('account')));
+  }
 };
 
 reteriveDate();
 
 // Save accounts in local storage
 const saveData = function (accounts) {
+  localStorage.clear();
   localStorage.setItem('accounts', JSON.stringify(accounts));
 };
 
@@ -291,13 +298,15 @@ const displaySummary = function (account) {
     currency: account.currency,
   }).format(incomeValue)}`;
 
-  const outcomeValue = account.movements
-    .filter(movement => movement < 0)
-    .reduce((accumlator, movement) => accumlator + movement);
-  labelOutcome.textContent = `${new Intl.NumberFormat(account.locale, {
-    style: 'currency',
-    currency: account.currency,
-  }).format(Math.abs(outcomeValue))}`;
+  if (account.movements.some(movement => movement < 0)) {
+    const outcomeValue = account.movements
+      .filter(movement => movement < 0)
+      .reduce((accumlator, movement) => accumlator + movement);
+    labelOutcome.textContent = `${new Intl.NumberFormat(account.locale, {
+      style: 'currency',
+      currency: account.currency,
+    }).format(Math.abs(outcomeValue))}`;
+  }
 
   const interestValue = account.movements
     .filter(movement => movement > 0)

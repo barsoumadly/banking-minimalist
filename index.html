@@ -339,13 +339,22 @@
         in just <span class="highlight">5 minutes</span>
       </h2>
       <form class="modal__form">
-        <label>First Name</label>
-        <input type="text" />
-        <label>Last Name</label>
-        <input type="text" />
-        <label>Email Address</label>
-        <input type="email" />
+        <label class="firstname--label">First Name</label>
+        <input type="text" class="first-name" required />
+        <label class="lastname--label">Last Name</label>
+        <input type="text" class="last-name" required />
+        <label class="password--label">Password</label>
+        <input type="password" class="password" required />
+
+        <label class="deposit--label hide">Deposit</label>
+        <input type="text" class="deposit hide" required />
+        <label class="locale--label hide">Locale</label>
+        <input type="text" class="locale hide" required />
+        <label class="currency--label hide">Currency</label>
+        <input type="text" class="currency hide" required />
+
         <button class="btn btn--next">Next step &rarr;</button>
+        <button class="btn btn--done hide">Done</button>
         <button class="btn btn--login">Log in &rarr;</button>
       </form>
     </div>

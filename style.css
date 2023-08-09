@@ -8,7 +8,7 @@
   --color-primary-opacity: #5ec5763a;
   --color-secondary-opacity: #ffcd0331;
   --color-tertiary-opacity: #ff58602d;
-  --gradient-primary: linear-gradient(to top left, #39b385, #9be15d);
+  --gradient-primary: linear-gradient(to top left, #39b385, #a3cb38);
   --gradient-secondary: linear-gradient(to top left, #ffb003, #ffcb03);
 }
 * {
@@ -503,6 +503,7 @@ h4 {
   box-shadow: 0 4rem 6rem rgba(0, 0, 0, 0.3);
   z-index: 1000;
   transition: all 0.5s;
+  padding-bottom: 0px;
 }
 .overlay {
   position: fixed;
@@ -573,4 +574,21 @@ h4 {
 }
 .btn--next {
   transform: translateX(-60%);
+}
+.btn--done {
+  margin-bottom: 60px;
+}
+.hide {
+  display: none;
+}
+.message {
+  color: #444;
+  font-size: 30px;
+  margin-top: -30px;
+  margin-bottom: 100px;
+  text-align: center;
+  font-weight: 500;
+}
+.name {
+  color: rgb(192, 57, 43);
 }

@@ -197,7 +197,8 @@ const displayPartOfDay = function () {
 
 // Showing name of the user
 const showName = function (account) {
-  const firstName = account.owner.split(' ')[0];
+  let firstName = account.owner.split(' ')[0];
+  firstName = firstName.slice(0, 1).toUpperCase() + firstName.slice(1);
   const greeting = displayPartOfDay();
   labelWelcome.innerHTML = `${greeting}, <span class = "name">${firstName}!</span>`;
 };

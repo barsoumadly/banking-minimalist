@@ -181,10 +181,25 @@ const createUsername = function (accounts) {
 
 createUsername(accounts);
 
+// Displaying parts of the day
+const displayPartOfDay = function () {
+  const time = new Date().getHours();
+  if (time >= 5 && time < 12) {
+    return 'Good Morning';
+  } else if (time >= 12 && time < 17) {
+    return 'Good Afternoon';
+  } else if (time >= 17 && time < 21) {
+    return 'Good Evening';
+  } else {
+    return 'Good Night';
+  }
+};
+
 // Showing name of the user
 const showName = function (account) {
   const firstName = account.owner.split(' ')[0];
-  labelWelcome.innerHTML = `Welcome back, <span class = "name">${firstName}</span>`;
+  const greeting = displayPartOfDay();
+  labelWelcome.innerHTML = `${greeting}, <span class = "name">${firstName}!</span>`;
 };
 
 // Showing container app

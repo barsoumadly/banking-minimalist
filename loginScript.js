@@ -17,11 +17,14 @@ const labelTimer = document.querySelector('.timer');
 const labelIncome = document.querySelector('.summary__value--in');
 const labelOutcome = document.querySelector('.summary__value--out');
 const labelInterest = document.querySelector('.summary__value--interest');
+const modalHeader = document.querySelector('.modal__header');
 
 // Selecting containers
 const headerEL = document.querySelector('.header__title');
 const appEL = document.querySelector('.app');
 const movementsContainer = document.querySelector('.movements');
+const modalEl = document.querySelector('.modal');
+const overlayEl = document.querySelector('.overlay');
 
 // Selecting buttons
 const btnLogin = document.querySelector('.login__btn');
@@ -30,6 +33,7 @@ const btnLoan = document.querySelector('.form__btn--loan');
 const btnClose = document.querySelector('.form__btn--close');
 const btnTransfer = document.querySelector('.form__btn--transfer');
 const btnSort = document.querySelector('.btn--sort');
+const btnCloseModal = document.querySelector('.btn--close-modal');
 
 // Declaring main variables
 let currentAccount, timer;
@@ -458,6 +462,18 @@ btnLogout.addEventListener('click', function (event) {
   hideButton();
 });
 
+// Showing modal
+const showModal = function () {
+  modalEl.classList.remove('hide');
+  overlayEl.classList.remove('hide');
+};
+
+// Closing modal
+const closeModal = function () {
+  modalEl.classList.add('hide');
+  overlayEl.classList.add('hide');
+};
+
 btnTransfer.addEventListener('click', function (event) {
   event.preventDefault();
 
@@ -504,6 +520,14 @@ btnTransfer.addEventListener('click', function (event) {
   amountTransferInput.blur();
 });
 
+// Showing invalid loan message
+const showMessage = function () {
+  showModal();
+  modalHeader.innerHTML = `Sorry! <span class="name">${
+    currentAccount.owner.split(' ')[0]
+  }</span><br> you can't take the loan as the highest deposit in your account does not exceed 10% of loan amount`;
+};
+
 btnLoan.addEventListener('click', function (event) {
   event.preventDefault();
 
@@ -522,12 +546,14 @@ btnLoan.addEventListener('click', function (event) {
       // Send data to local storage
       saveData(accounts);
     }, 3000);
+  } else {
+    showMessage(amount);
+  }
 
-    // reset the log out timer
-    if (timer) {
-      clearInterval(timer);
-      timer = startLogOutTimer();
-    }
+  // reset the log out timer
+  if (timer) {
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 
   // Reseting input field
@@ -564,4 +590,13 @@ btnSort.addEventListener('click', function (event) {
 
   displayMovements(currentAccount, !isSorted);
   isSorted = !isSorted;
+});
+
+// Closing modal ways
+btnCloseModal.addEventListener('click', closeModal);
+overlayEl.addEventListener('click', closeModal);
+document.addEventListener('keydown', function (event) {
+  if (event.code === 'Escape' && !modalEl.classList.contains('hidden')) {
+    closeModal();
+  }
 });

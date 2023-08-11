@@ -474,6 +474,16 @@ const closeModal = function () {
   overlayEl.classList.add('hide');
 };
 
+// Showing invalid transfer message
+const showTransferMessage = function (receiverAccount) {
+  showModal();
+  modalHeader.innerHTML = `Sorry! <span class="name">${
+    currentAccount.owner.split(' ')[0]
+  }</span><br> you can't transfer this amount to <span class="name">${
+    receiverAccount.owner.split(' ')[0]
+  }</span> as your balance is less than transfer amount`;
+};
+
 btnTransfer.addEventListener('click', function (event) {
   event.preventDefault();
 
@@ -507,12 +517,14 @@ btnTransfer.addEventListener('click', function (event) {
       // Send data to local storage
       saveData(accounts);
     }, 3000);
+  } else {
+    showTransferMessage(receiverAccount);
+  }
 
-    // reset the log out timer
-    if (timer) {
-      clearInterval(timer);
-      timer = startLogOutTimer();
-    }
+  // reset the log out timer
+  if (timer) {
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 
   // Reseting input fields
@@ -521,7 +533,7 @@ btnTransfer.addEventListener('click', function (event) {
 });
 
 // Showing invalid loan message
-const showMessage = function () {
+const showLoanMessage = function () {
   showModal();
   modalHeader.innerHTML = `Sorry! <span class="name">${
     currentAccount.owner.split(' ')[0]
@@ -547,7 +559,7 @@ btnLoan.addEventListener('click', function (event) {
       saveData(accounts);
     }, 3000);
   } else {
-    showMessage(amount);
+    showLoanMessage(amount);
   }
 
   // reset the log out timer

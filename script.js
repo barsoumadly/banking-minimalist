@@ -20,6 +20,7 @@ const currencyLabel = document.querySelector('.currency--label');
 const modalEl = document.querySelector('.modal');
 const modalFormEl = document.querySelector('.modal__form');
 const overlayEl = document.querySelector('.overlay');
+const section1 = document.getElementById('section--1');
 
 // Selecting buttons
 const btnsShowModal = document.querySelectorAll('.btn--show-modal');
@@ -27,6 +28,7 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnLogin = document.querySelector('.btn--login');
 const btnNext = document.querySelector('.btn--next');
 const btnDone = document.querySelector('.btn--done');
+const btnLearnMore = document.querySelector('.btn--scroll-to');
 
 // Declaring main variables
 let account = {};
@@ -157,4 +159,11 @@ btnDone.addEventListener('click', function (event) {
 
   // Reseting input fields
   depositInput.value = localeInput.value = currencyInput.value = '';
+});
+
+// Scrolling to section--1
+btnLearnMore.addEventListener('click', function (event) {
+  event.preventDefault();
+
+  section1.scrollIntoView({ behavior: 'smooth' });
 });

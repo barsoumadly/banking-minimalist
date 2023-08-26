@@ -29,6 +29,7 @@ const btnLogin = document.querySelector('.btn--login');
 const btnNext = document.querySelector('.btn--next');
 const btnDone = document.querySelector('.btn--done');
 const btnLearnMore = document.querySelector('.btn--scroll-to');
+const btnsNav = document.querySelectorAll('.nav__link');
 
 // Declaring main variables
 let account = {};
@@ -167,3 +168,14 @@ btnLearnMore.addEventListener('click', function (event) {
 
   section1.scrollIntoView({ behavior: 'smooth' });
 });
+
+// Navigation Scrolling to prupose section
+for (let i = 0; i < btnsNav.length; i++) {
+  btnsNav[i].addEventListener('click', function (event) {
+    event.preventDefault();
+
+    const element = btnsNav[i].getAttribute('href');
+    const section = document.querySelector(element);
+    section.scrollIntoView({ behavior: 'smooth' });
+  });
+}

@@ -152,12 +152,16 @@ let accounts = [account1, account2];
 
 // Retrieve account from local storage
 const reteriveDate = function () {
-  accounts = JSON.parse(localStorage.getItem('accounts'));
-  if (
-    localStorage.getItem('account') &&
-    !accounts.includes(JSON.parse(localStorage.getItem('account')))
-  ) {
-    accounts.push(JSON.parse(localStorage.getItem('account')));
+  if (localStorage.getItem('accounts') !== null) {
+    accounts = JSON.parse(localStorage.getItem('accounts'));
+    if (
+      localStorage.getItem('account') &&
+      !accounts.includes(JSON.parse(localStorage.getItem('account')))
+    ) {
+      accounts.push(JSON.parse(localStorage.getItem('account')));
+    }
+  } else {
+    accounts = [account1, account2];
   }
 };
 
